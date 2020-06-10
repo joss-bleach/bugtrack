@@ -103,3 +103,31 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+// ROUTE - PUT /api/projects/completed/:id
+// DESC - Mark project as completed
+// ACCESS - Private
+router.put("/completed/:id", auth, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    // Check if project exists
+    if (!project) {
+      return res.status(404).json({ msg: "No project found." });
+    }
+
+    // Check that project was created by user
+    if (project.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Unauthorised." });
+    }
+
+    project.completed = true;
+    await project.save();
+    res.json({ msg: "Project completed." });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "No project found." });
+    }
+    res.status(500).send("Server Error");
+  }
+});
