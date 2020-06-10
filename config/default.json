@@ -1,0 +1,5 @@
+{
+  "mongoURI": "mongodb+srv://dbuser:dbpassword@bugtrack-dev-3mdhr.mongodb.net/<dbname>?retryWrites=true&w=majority",
+  "secretOr": "D815A829AEB2042213628F27BE689AD4922ABE345ED78B76EF978E8D1734817F",
+  "jwtExpiry": "36000000"
+}
