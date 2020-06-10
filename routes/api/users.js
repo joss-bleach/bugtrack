@@ -16,7 +16,6 @@ router.post(
     check("firstName", "Please enter your first name.").not().isEmpty(),
     check("lastName", "Please enter your last name").not().isEmpty(),
     check("email", "Please enter a valid email address.").isEmail(),
-    check("email", "Please enter your email address.").not().isEmpty(),
     check(
       "password",
       "Your password must contain at least 6 characters."
@@ -56,23 +55,8 @@ router.post(
       // Save user
       await user.save();
 
-      // Configure jwt
-      const payload = {
-        user: {
-          id: user.id,
-        },
-      };
-
-      // Sign jwt
-      jwt.sign(
-        payload,
-        config.get("secretOr"),
-        { expiresIn: config.get("jwtExpiry") },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      // Return Success
+      res.json({ msg: "Registration Successful." });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
