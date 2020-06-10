@@ -56,3 +56,50 @@ router.get("/user/:user_id", auth, async (req, res) => {
 });
 
 module.exports = router;
+
+// ROUTE - GET /api/projects/:id
+// DESC - Get single project
+// ACCESS - Private
+router.get("/:id", auth, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ msg: "No project found." });
+    }
+
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "No project found." });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
+// ROUTE - DELETE /api/projects/:id
+// DESC - Delete a project (including all associated tasks and bugs)
+// ACCESS - Private
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    // Check if project exists
+    if (!project) {
+      return res.status(404).json({ msg: "No project found." });
+    }
+
+    // Check that project was created by user
+    if (project.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Unauthorised." });
+    }
+
+    await project.remove();
+    res.json({ msg: "Project removed successfully." });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "No project found." });
+    }
+    res.status(500).send("Server Error");
+  }
+});
