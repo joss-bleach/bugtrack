@@ -25,6 +25,10 @@ const BugSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    required: true,
+  },
   completed: {
     type: Boolean,
     default: false,
