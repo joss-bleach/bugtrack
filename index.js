@@ -11,5 +11,7 @@ app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/projects", require("./routes/api/projects"));
 app.use("/api/tasks", require("./routes/api/tasks"));
+app.use("/api/bugs", require("./routes/api/bugs"));
+app.use("/api/tests", require("./routes/api/tests"));
 
 app.listen(PORT, () => console.log(`🚀 Listening on port ${PORT}.`));

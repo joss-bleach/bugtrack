@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const TaskSchema = new mongoose.Schema({
+const BugSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
@@ -9,11 +9,15 @@ const TaskSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "project",
   },
-  title: {
+  subject: {
     type: String,
     required: true,
   },
-  summary: {
+  description: {
+    type: String,
+    required: true,
+  },
+  url: {
     type: String,
     required: true,
   },
@@ -21,16 +25,9 @@ const TaskSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  status: {
-    type: String,
-    required: true,
-  },
   completed: {
     type: Boolean,
     default: false,
-  },
-  dueDate: {
-    type: Date,
   },
   dateCreated: {
     type: Date,
@@ -38,4 +35,4 @@ const TaskSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Task = mongoose.model("task", TaskSchema);
+module.exports = Bug = mongoose.model("bug", BugSchema);

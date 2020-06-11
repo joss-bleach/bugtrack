@@ -1,27 +1,19 @@
 const mongoose = require("mongoose");
 
-const TaskSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
-  },
-  project: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "project",
-  },
+const TestSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
-  summary: {
+  description: {
     type: String,
     required: true,
   },
-  priority: {
+  expected: {
     type: String,
     required: true,
   },
-  status: {
+  outcome: {
     type: String,
     required: true,
   },
@@ -29,13 +21,10 @@ const TaskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  dueDate: {
-    type: Date,
-  },
   dateCreated: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = Task = mongoose.model("task", TaskSchema);
+module.exports = Test = mongoose.model("test", TestSchema);

@@ -11,8 +11,9 @@ const ProjectSchema = new mongoose.Schema({
   },
   summary: {
     type: String,
+    required: true,
   },
-  createdAt: {
+  dateCreated: {
     type: Date,
     default: Date.now,
   },

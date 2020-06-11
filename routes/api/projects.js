@@ -4,67 +4,73 @@ const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
 const Project = require("../../models/Project");
-const User = require("../../models/User");
 
 // ROUTE - POST /api/projects
-// DESC - Create a project
+// DESC - Create a new project
 // ACCESS - Private
 router.post(
   "/",
   [
     auth,
-    [check("title", "Please enter the name of the project").not().isEmpty()],
+    [
+      check("title", "Please enter a project title.").not().isEmpty(),
+      check("summary", "Please enter a project summary").not().isEmpty(),
+    ],
   ],
   async (req, res) => {
-    // Check for errors
+    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     try {
+      // Prepare user input for database
       const { title, summary, dueDate } = req.body;
       const newProject = {};
       newProject.user = req.user.id;
       newProject.title = title;
-      if (summary) newProject.summary = summary;
-      if (dueDate) newProject.dueDate = dueDate;
+      newProject.summary = summary;
+      if (dueDate) newProject.summary = dueDate;
 
+      // Save to database and return project information
       const project = new Project(newProject);
       await project.save();
       res.json(project);
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
 );
 
-// ROUTE - GET /api/projects/user/:user_id
-// DESC - Get all projects by user
+// ROUTE - PUT /api/projects/:id
+// DESC - Update a project
 // ACCESS - Private
-router.get("/user/:user_id", auth, async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   try {
-    const projects = await Project.find({ user: req.user.id }).sort({
-      date: -1,
-    });
-    res.json(projects);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
-
-// ROUTE - GET /api/projects/:id
-// DESC - Get single project
-// ACCESS - Private
-router.get("/:id", auth, async (req, res) => {
-  try {
-    const project = await Project.findById(req.params.id);
+    // Check if project exists
+    let project = await Project.findById(req.params.id);
     if (!project) {
       return res.status(404).json({ msg: "No project found." });
     }
 
+    // Prepare user input for update
+    const { title, summary, dueDate } = req.body;
+    const updateProject = {};
+    if (title) updateProject.title = title;
+    if (summary) updateProject.summary = summary;
+    if (dueDate) updateProject.dueDate = dueDate;
+
+    // Update project
+    project = await Project.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: updateProject },
+      { new: true }
+    );
+
+    // Save project
+    await project.save();
     res.json(project);
   } catch (err) {
     console.error(err.message);
@@ -76,118 +82,102 @@ router.get("/:id", auth, async (req, res) => {
 });
 
 // ROUTE - DELETE /api/projects/:id
-// DESC - Delete a project (including all associated tasks and bugs)
+// DESC - Delete a project
 // ACCESS - Private
 router.delete("/:id", auth, async (req, res) => {
   try {
+    // Check project exists
     const project = await Project.findById(req.params.id);
-    // Check if project exists
     if (!project) {
       return res.status(404).json({ msg: "No project found." });
     }
 
-    // Check that project was created by user
+    // Check that current user created project
     if (project.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: "Unauthorised." });
+      return res.status(401).json({ msg: "Unauthorised Request." });
     }
 
+    // Remove project
     await project.remove();
-    res.json({ msg: "Project removed successfully." });
+    res.json({ msg: "Project deleted successfully." });
   } catch (err) {
     console.error(err.message);
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "No project found." });
     }
+    res.status(500).send("Server Error");
+  }
+});
+
+// ROUTE - GET /api/projects/:id
+// DESC - Get a single project
+// ACCESS - Private
+router.get("/:id", auth, async (req, res) => {
+  try {
+    // Check project exists
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ msg: "No project found." });
+    }
+
+    // Return project
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "No project found." });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
+// ROUTE - GET /api/projects/users/:userid
+// DESC - Get all projects from a single user
+// ACCESS - Private
+router.get("/users/:userid", auth, async (req, res) => {
+  try {
+    // Search for projects by user id
+    const projects = await Project.find({ user: req.user.id }).sort({
+      date: -1,
+    });
+
+    // Check projects exist
+    if (!projects) {
+      return res.status(404).json({ msg: "No projects found." });
+    }
+
+    // Return projects
+    res.json(projects);
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
 
 // ROUTE - PUT /api/projects/completed/:id
-// DESC - Mark project as completed
+// DESC - Mark project as complete
 // ACCESS - Private
 router.put("/completed/:id", auth, async (req, res) => {
   try {
+    // Check for project
     const project = await Project.findById(req.params.id);
-    // Check if project exists
     if (!project) {
       return res.status(404).json({ msg: "No project found." });
     }
 
-    // Check that project was created by user
+    // Check that current user created project
     if (project.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: "Unauthorised." });
+      return res.status(401).json({ msg: "Unauthorised Request." });
     }
 
+    // Mark project as complete and save
     project.completed = true;
     await project.save();
-    res.json({ msg: "Project completed." });
+    res.json(project);
   } catch (err) {
     console.error(err.message);
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "No project found." });
-    }
-    res.status(500).send("Server Error");
-  }
-});
-
-// ROUTE - PUT /api/projects/:id
-// DESC - Update a project
-// ACCESS - Private
-router.put(
-  "/:id",
-  [
-    auth,
-    [check("title", "Please enter the name of the project").not().isEmpty()],
-  ],
-  async (req, res) => {
-    try {
-      let project = await Project.findOneById(req.params.id);
-      if (!project) {
-        return res.status(404).json({ msg: "No project found." });
-      }
-
-      const { title, summary, dueDate } = req.body;
-      const projectFields = {};
-      projectFields.user = req.user.id;
-      projectFields.title = title;
-      if (summary) projectFields.summary = summary;
-      if (dueDate) projectFields.dueDate = dueDate;
-
-      project = await Project.findOneAndUpdate(
-        { user: req.user.id },
-        { $set: projectFields },
-        { new: true }
-      );
-      await project.save();
-      res.json(project);
-    } catch (err) {
-      console.error(err.message);
-      if (err.kind === "ObjectId") {
-        return res.status(404).json({ msg: "No Project Found." });
-      }
-      res.status(500).send("Server Error");
-    }
-  }
-);
-
-// ROUTE - GET /api/projects/tasks/:id
-// DESC - Get all tasks for a project
-// ACCESS - Private
-router.get("/tasks/:id", auth, async (req, res) => {
-  try {
-    let project = await Project.findById(req.params.id);
-    if (!project) {
-      return res.status(404).json({ msg: "No project found." });
-    }
-
-    const tasks = await Task.find({ project: req.params.id }).sort({
-      date: -1,
-    });
-    res.json(tasks);
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "No Project Found." });
     }
     res.status(500).send("Server Error");
   }
