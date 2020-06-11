@@ -1,6 +1,14 @@
 const mongoose = require("mongoose");
 
 const TestSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
+  project: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "project",
+  },
   title: {
     type: String,
     required: true,
@@ -15,7 +23,6 @@ const TestSchema = new mongoose.Schema({
   },
   outcome: {
     type: String,
-    required: true,
   },
   completed: {
     type: Boolean,
