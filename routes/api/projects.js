@@ -49,10 +49,13 @@ router.post(
 // ACCESS - Private
 router.put("/:id", auth, async (req, res) => {
   try {
-    // Check if project exists
+    // Check if project exists and that the logged in user created the project
     let project = await Project.findById(req.params.id);
     if (!project) {
       return res.status(404).json({ msg: "No project found." });
+    }
+    if (project.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Unauthorised Request." });
     }
 
     // Prepare user input for update
