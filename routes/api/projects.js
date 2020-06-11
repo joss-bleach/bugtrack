@@ -55,8 +55,6 @@ router.get("/user/:user_id", auth, async (req, res) => {
   }
 });
 
-module.exports = router;
-
 // ROUTE - GET /api/projects/:id
 // DESC - Get single project
 // ACCESS - Private
@@ -131,3 +129,68 @@ router.put("/completed/:id", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+// ROUTE - PUT /api/projects/:id
+// DESC - Update a project
+// ACCESS - Private
+router.put(
+  "/:id",
+  [
+    auth,
+    [check("title", "Please enter the name of the project").not().isEmpty()],
+  ],
+  async (req, res) => {
+    try {
+      let project = await Project.findOneById(req.params.id);
+      if (!project) {
+        return res.status(404).json({ msg: "No project found." });
+      }
+
+      const { title, summary, dueDate } = req.body;
+      const projectFields = {};
+      projectFields.user = req.user.id;
+      projectFields.title = title;
+      if (summary) projectFields.summary = summary;
+      if (dueDate) projectFields.dueDate = dueDate;
+
+      project = await Project.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: projectFields },
+        { new: true }
+      );
+      await project.save();
+      res.json(project);
+    } catch (err) {
+      console.error(err.message);
+      if (err.kind === "ObjectId") {
+        return res.status(404).json({ msg: "No Project Found." });
+      }
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// ROUTE - GET /api/projects/tasks/:id
+// DESC - Get all tasks for a project
+// ACCESS - Private
+router.get("/tasks/:id", auth, async (req, res) => {
+  try {
+    let project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ msg: "No project found." });
+    }
+
+    const tasks = await Task.find({ project: req.params.id }).sort({
+      date: -1,
+    });
+    res.json(tasks);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "No Project Found." });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
+module.exports = router;
