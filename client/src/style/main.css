@@ -1,0 +1,18 @@
+.navbar-logo {
+  height: 50px;
+  width: 50px;
+  display: block;
+  background-image: url(../assets/logo-white.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.form-wrap {
+  margin: 50px;
+  text-align: center;
+}
+.sub-head {
+  color: grey;
+}
+.m2 {
+  margin: 20px 0;
+}

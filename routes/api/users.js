@@ -55,8 +55,24 @@ router.post(
       // Save user
       await user.save();
 
-      // Return Success
-      res.json({ msg: "Registration Successful." });
+      // Prepate JWT
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get("secretOr"),
+        { expiresIn: config.get("jwtExpiry") },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+
+      // Sign Token
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
