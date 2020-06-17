@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Redux
@@ -66,6 +67,7 @@ export const RegisterForm = ({ setAlert }) => {
               onChange={(e) => onChange(e)}
               className="form-control input-sm floatlabel"
               placeholder="Email Address"
+              formnovalidate
             />
           </div>
         </div>
@@ -115,11 +117,8 @@ export const RegisterForm = ({ setAlert }) => {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <p>
-            Got an account?{" "}
-            <a href="#" className="sub-head">
-              Click Here
-            </a>{" "}
-            to sign in.
+            Already got an account? <Link to="/login">Click here</Link> to log
+            in.
           </p>
         </div>
       </div>
