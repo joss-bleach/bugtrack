@@ -7,10 +7,17 @@ import Routes from "./components/routing/Routes";
 
 // Redux
 import { Provider } from "react-redux";
+import store from "./redux/store";
+//import { loadUser } from "./redux/actions/auth";
+import setAuthToken from "./utilities/setAuthToken";
 
-function App() {
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
+
+const App = () => {
   return (
-    <Fragment>
+    <Provider store={store}>
       <Router>
         <Fragment>
           <Navbar />
@@ -19,8 +26,8 @@ function App() {
           </Switch>
         </Fragment>
       </Router>
-    </Fragment>
+    </Provider>
   );
-}
+};
 
 export default App;
