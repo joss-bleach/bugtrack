@@ -13,15 +13,15 @@ export const Navbar = () => {
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarColor02"
-          aria-controls="navbarColor02"
+          data-target="#toggledMenu"
+          aria-controls="#toggledMenu"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarColor02">
+        <div className="navbar-collapse collapse" id="toggledMenu">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
               <Link className="nav-link" to="/">
