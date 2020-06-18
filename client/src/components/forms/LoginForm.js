@@ -1,16 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const LoginForm = (props) => {
+// Redux
+import { connect } from "react-redux";
+import { login } from "../../redux/actions/auth";
+
+const LoginForm = ({ login, isAuthenticated }) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    login(email, password);
+  };
+
+  // Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
-    <form role="form" className="m2">
+    <form onSubmit={(e) => onSubmit(e)} className="m2">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="form-group">
             <input
               type="email"
               name="email"
+              value={email}
+              onChange={(e) => onChange(e)}
               className="form-control input-sm floatlabel"
               placeholder="Email Address"
             />
@@ -23,6 +49,8 @@ const LoginForm = (props) => {
             <input
               type="password"
               name="password"
+              value={password}
+              onChange={(e) => onChange(e)}
               className="form-control input-sm floatlabel"
               placeholder="Password"
             />
@@ -63,6 +91,13 @@ const LoginForm = (props) => {
   );
 };
 
-LoginForm.propTypes = {};
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
 
-export default LoginForm;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { login })(LoginForm);

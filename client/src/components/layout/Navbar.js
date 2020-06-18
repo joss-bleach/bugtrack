@@ -1,8 +1,43 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import "../../style/main.css";
+import PropTypes from "prop-types";
 
-export const Navbar = () => {
+// Redux
+import { connect } from "react-redux";
+import { logout } from "../../redux/actions/auth";
+
+export const Navbar = ({ auth: { isAuthenticated, loading } }) => {
+  const authLinks = (
+    <Fragment>
+      <li className="nav-item">
+        <Link className="nav-link" to="/dashboard">
+          My Projects
+        </Link>
+      </li>
+      <li className="nav-item">
+        <a onClick={logout} className="nav-link" href="#!">
+          Log Out
+        </a>
+      </li>
+    </Fragment>
+  );
+
+  const guestLinks = (
+    <Fragment>
+      <li className="nav-item">
+        <Link className="nav-link" to="/">
+          Sign Up
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" to="/login">
+          Log In
+        </Link>
+      </li>
+    </Fragment>
+  );
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -20,24 +55,25 @@ export const Navbar = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-
         <div className="navbar-collapse collapse" id="toggledMenu">
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/">
-                Sign Up
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">
-                Log In
-              </Link>
-            </li>
-          </ul>
+          {!loading && (
+            <ul className="navbar-nav ml-auto">
+              {isAuthenticated ? authLinks : guestLinks}
+            </ul>
+          )}
         </div>
       </div>
     </nav>
   );
 };
 
-export default Navbar;
+Navbar.propTypes = {
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(Navbar);

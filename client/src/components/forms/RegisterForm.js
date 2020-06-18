@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Redux
@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { setAlert } from "../../redux/actions/alert";
 import { register } from "../../redux/actions/auth";
 
-export const RegisterForm = ({ setAlert, register }) => {
+export const RegisterForm = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -29,6 +29,11 @@ export const RegisterForm = ({ setAlert, register }) => {
       register({ firstName, lastName, email, password });
     }
   };
+
+  // Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <form className="m2" onSubmit={(e) => onSubmit(e)}>
@@ -68,7 +73,6 @@ export const RegisterForm = ({ setAlert, register }) => {
               onChange={(e) => onChange(e)}
               className="form-control input-sm floatlabel"
               placeholder="Email Address"
-              formnovalidate
             />
           </div>
         </div>
@@ -132,4 +136,8 @@ RegisterForm.propTypes = {
   register: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setAlert, register })(RegisterForm);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { setAlert, register })(RegisterForm);
