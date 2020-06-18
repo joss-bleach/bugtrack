@@ -7,24 +7,29 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logout } from "../../redux/actions/auth";
 
-export const Navbar = ({ auth: { isAuthenticated, loading } }) => {
+export const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
-    <Fragment>
+    <ul className="navbar-nav ml-auto">
       <li className="nav-item">
         <Link className="nav-link" to="/dashboard">
           My Projects
         </Link>
       </li>
       <li className="nav-item">
-        <a onClick={logout} className="nav-link" href="#!">
-          Log Out
-        </a>
+        <Link className="nav-link" to="/account">
+          My Account
+        </Link>
       </li>
-    </Fragment>
+      <li className="nav-item">
+        <Link onClick={logout} className="nav-link" to="/">
+          Log Out
+        </Link>
+      </li>
+    </ul>
   );
 
   const guestLinks = (
-    <Fragment>
+    <ul className="navbar-nav ml-auto">
       <li className="nav-item">
         <Link className="nav-link" to="/">
           Sign Up
@@ -35,7 +40,7 @@ export const Navbar = ({ auth: { isAuthenticated, loading } }) => {
           Log In
         </Link>
       </li>
-    </Fragment>
+    </ul>
   );
 
   return (
@@ -57,9 +62,7 @@ export const Navbar = ({ auth: { isAuthenticated, loading } }) => {
         </button>
         <div className="navbar-collapse collapse" id="toggledMenu">
           {!loading && (
-            <ul className="navbar-nav ml-auto">
-              {isAuthenticated ? authLinks : guestLinks}
-            </ul>
+            <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
           )}
         </div>
       </div>
@@ -76,4 +79,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, { logout })(Navbar);

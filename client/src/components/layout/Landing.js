@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import RegisterForm from "../forms/RegisterForm";
 
 export const Landing = () => {

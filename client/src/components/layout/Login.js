@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import LoginForm from "../forms/LoginForm";
 
 export const Landing = () => {

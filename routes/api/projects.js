@@ -134,10 +134,10 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 
-// ROUTE - GET /api/projects/users/:userid
+// ROUTE - GET /api/projects/users/me
 // DESC - Get all projects from a single user
 // ACCESS - Private
-router.get("/users/:userid", auth, async (req, res) => {
+router.get("/users/me", auth, async (req, res) => {
   try {
     // Search for projects by user id
     const projects = await Project.find({ user: req.user.id }).sort({
