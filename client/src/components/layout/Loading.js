@@ -1,7 +1,11 @@
 import React from "react";
 
 export const Loading = () => {
-  return <div></div>;
+  return (
+    <div>
+      <p>LOADING</p>
+    </div>
+  );
 };
 
 export default Loading;

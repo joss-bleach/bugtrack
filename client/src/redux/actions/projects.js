@@ -3,7 +3,7 @@ import axios from "axios";
 import { GET_PROJECTS, PROJECT_ERROR } from "./types";
 
 // Get all user projects
-export const getAllProjects = () => async (dispatch) => {
+export const getProjects = () => async (dispatch) => {
   try {
     const res = await axios.get("/api/projects/users/me");
     dispatch({

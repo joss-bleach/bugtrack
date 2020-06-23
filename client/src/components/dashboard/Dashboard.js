@@ -1,48 +1,34 @@
 import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import NoProjects from "./NoProjects";
-import Loading from "../layout/Loading";
-import ProjectItem from "./ProjectItem";
 
 // Redux
 import { connect } from "react-redux";
-import { getAllProjects } from "../../redux/actions/projects";
+import Loading from "../layout/Loading";
+import { getProjects } from "../../redux/actions/projects";
 
-const Dashboard = ({ getAllProjects, project: { projects, loading } }) => {
+const Dashboard = ({ getProjects }) => {
   useEffect(() => {
-    getAllProjects();
-  }, [getAllProjects]);
+    getProjects();
+  }, []);
 
   return (
-    <Fragment>
-      {loading ? (
-        <Loading />
-      ) : (
-        <Fragment>
-          <h1 className="m2">My Projects</h1>
-          <hr />
-          <div className="projects">
-            {projects.length > 0 ? (
-              projects.map((project) => (
-                <ProjectItem key={project.id} project={project}></ProjectItem>
-              ))
-            ) : (
-              <NoProjects />
-            )}
-          </div>
-        </Fragment>
-      )}
-    </Fragment>
+    <div>
+      <Fragment>
+        <h1 className="m2">My Projects</h1>
+        <hr />
+        <NoProjects />
+      </Fragment>
+    </div>
   );
 };
 
 Dashboard.propTypes = {
-  getAllProfiles: PropTypes.func.isRequired,
-  project: PropTypes.object.isRequired,
+  getProjects: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  project: state.project,
+  projects: state.projects,
 });
 
-export default connect(mapStateToProps, { getAllProjects })(Dashboard);
+export default connect(mapStateToProps, { getProjects })(Dashboard);

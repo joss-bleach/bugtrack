@@ -9,7 +9,7 @@ export const NoProjects = () => {
           You don't have any projects yet - create your first one.
         </p>
         <button type="button" className="btn btn-success">
-          <span class="mdi mdi-plus-circle-outline"></span> Create Project
+          <span className="mdi mdi-plus-circle-outline"></span> Create Project
         </button>
       </div>
     </div>

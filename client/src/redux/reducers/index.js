@@ -6,4 +6,5 @@ import projects from "./projects";
 export default combineReducers({
   alert,
   auth,
+  projects,
 });
