@@ -3,6 +3,7 @@ import {
   GET_PROJECTS,
   PROJECT_ERROR,
   DELETE_PROJECT,
+  GET_PROJECT,
 } from "../actions/types";
 
 const initialState = {
@@ -20,6 +21,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         projectlist: payload,
+        loading: false,
+      };
+    case GET_PROJECT:
+      return {
+        ...state,
+        project: payload,
         loading: false,
       };
     case PROJECT_ERROR:

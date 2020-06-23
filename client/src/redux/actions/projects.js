@@ -1,7 +1,12 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 
-import { GET_PROJECTS, PROJECT_ERROR, DELETE_PROJECT } from "./types";
+import {
+  GET_PROJECTS,
+  PROJECT_ERROR,
+  DELETE_PROJECT,
+  GET_PROJECT,
+} from "./types";
 
 // Get all user projects
 export const getProjects = () => async (dispatch) => {
@@ -39,5 +44,22 @@ export const deleteProject = (id) => async (dispatch) => {
         payload: { msg: err.response.statusText, status: err.response.status },
       });
     }
+  }
+};
+
+// Get Project by Id
+
+export const getProjectById = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/projects/${id}`);
+    dispatch({
+      type: GET_PROJECT,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROJECT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
   }
 };
