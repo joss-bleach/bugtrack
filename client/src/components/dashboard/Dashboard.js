@@ -1,7 +1,8 @@
 import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import NoProjects from "./projects/NoProjects";
-import ProjectDash from "./projects/ProjectDash";
+import ProjectItem from "./projects/ProjectItem";
+//import ProjectDash from "./projects/ProjectDash";
 
 // Redux
 import { connect } from "react-redux";
@@ -11,7 +12,7 @@ import { getProjects } from "../../redux/actions/projects";
 const Dashboard = ({ getProjects, projects: { projectlist, loading } }) => {
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [getProjects]);
 
   return loading && projectlist === null ? (
     <div className="m2">
@@ -22,9 +23,9 @@ const Dashboard = ({ getProjects, projects: { projectlist, loading } }) => {
       <h1 className="m2">My Projects</h1>
       <hr />
       {projectlist.length > 0 ? (
-        <Fragment>
-          <ProjectDash />
-        </Fragment>
+        projectlist.map((project) => (
+          <ProjectItem key={project._id} project={project}></ProjectItem>
+        ))
       ) : (
         <NoProjects />
       )}
