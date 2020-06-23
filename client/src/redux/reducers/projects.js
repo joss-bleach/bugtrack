@@ -1,7 +1,13 @@
-import { CLEAR_PROJECT, GET_PROJECTS, PROJECT_ERROR } from "../actions/types";
+import {
+  CLEAR_PROJECT,
+  GET_PROJECTS,
+  PROJECT_ERROR,
+  DELETE_PROJECT,
+} from "../actions/types";
 
 const initialState = {
   projectlist: [],
+  project: null,
   loading: true,
   errors: {},
 };
@@ -20,6 +26,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: payload,
+        loading: false,
+      };
+    case DELETE_PROJECT:
+      return {
+        ...state,
+        projectlist: state.projectlist.filter(
+          (project) => project._id !== payload
+        ),
         loading: false,
       };
     case CLEAR_PROJECT:

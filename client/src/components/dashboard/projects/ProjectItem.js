@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
 
+// Redux
+import { connect } from "react-redux";
+import { deleteProject } from "../../../redux/actions/projects";
+
 const ProjectItem = ({
+  deleteProject,
   project: { _id, title, summary, dateCreated, completed },
 }) => {
   return (
@@ -22,7 +27,7 @@ const ProjectItem = ({
         <Link to={`/project/${_id}`} className="card-link">
           View Project
         </Link>
-        <a href="#!" className="card-link">
+        <a onClick={(e) => deleteProject(_id)} href="#!" className="card-link">
           Delete Project
         </a>
       </div>
@@ -32,6 +37,7 @@ const ProjectItem = ({
 
 ProjectItem.propTypes = {
   projects: PropTypes.object.isRequired,
+  deleteProject: PropTypes.func.isRequired,
 };
 
-export default ProjectItem;
+export default connect(null, { deleteProject })(ProjectItem);

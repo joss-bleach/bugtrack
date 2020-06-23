@@ -10,3 +10,5 @@ export const LOGOUT = "LOGOUT";
 export const CLEAR_PROJECT = "CLEAR_PROJECT";
 export const GET_PROJECTS = "GET_PROJECTS";
 export const PROJECT_ERROR = "PROJECT_ERRORS";
+export const CREATE_PROJECT = "CREATE_PROJECT";
+export const DELETE_PROJECT = "DELETE_PROJECT";

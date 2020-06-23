@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import NoProjects from "./projects/NoProjects";
 import ProjectItem from "./projects/ProjectItem";
-//import ProjectDash from "./projects/ProjectDash";
 
 // Redux
 import { connect } from "react-redux";
