@@ -1,7 +1,7 @@
 import { CLEAR_PROJECT, GET_PROJECTS, PROJECT_ERROR } from "../actions/types";
 
 const initialState = {
-  projects: [],
+  projectlist: [],
   loading: true,
   errors: {},
 };
@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
     case GET_PROJECTS:
       return {
         ...state,
-        projects: payload,
+        projectlist: payload,
         loading: false,
       };
     case PROJECT_ERROR:
