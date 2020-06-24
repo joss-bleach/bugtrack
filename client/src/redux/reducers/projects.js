@@ -46,7 +46,7 @@ export default function (state = initialState, action) {
     case CLEAR_PROJECT:
       return {
         ...state,
-        projects: [],
+        projectlist: [],
         loading: false,
       };
     default:

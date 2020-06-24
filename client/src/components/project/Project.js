@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Loading from "../layout/Loading";
+import ProjectTop from "./ProjectTop";
 
 // Redux
 import { connect } from "react-redux";
@@ -20,6 +21,11 @@ const Project = ({ getProjectById, match }) => {
 
 Project.propTypes = {
   getProjectById: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired,
 };
 
-export default connect(null, { getProjectById })(Project);
+const mapStateToProps = (state) => ({
+  project: state.project,
+});
+
+export default connect(mapStateToProps, { getProjectById })(Project);
