@@ -13,7 +13,6 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 
 // PROJECTS
-export const CREATE_PROJECT = "CREATE_PROJECT";
 export const GET_PROJECT = "GET_PROJECT";
 export const GET_PROJECTS = "GET_PROJECTS";
 export const UPDATE_PROECT = "CREATE_PROJECT";

@@ -31,7 +31,7 @@ router.post(
       newProject.user = req.user.id;
       newProject.title = title;
       newProject.summary = summary;
-      if (dueDate) newProject.summary = dueDate;
+      if (dueDate) newProject.dueDate = dueDate;
 
       // Save to database and return project information
       const project = new Project(newProject);

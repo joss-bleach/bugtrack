@@ -6,6 +6,7 @@ import Loading from "../layout/Loading";
 import { connect } from "react-redux";
 import { getProjectById } from "../../redux/actions/projects";
 
+// Project as prop then seperate into sections
 const Project = ({ getProjectById, match }) => {
   useEffect(() => {
     getProjectById(match.params.id);

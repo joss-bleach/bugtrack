@@ -8,6 +8,7 @@ import Alert from "../layout/Alert";
 import Login from "../layout/Login";
 import Dashboard from "../dashboard/Dashboard";
 import Project from "../project/Project";
+import NewProject from "../project/NewProject";
 
 export const Routes = () => {
   return (
@@ -17,7 +18,8 @@ export const Routes = () => {
         <Route exact path="/" component={Landing} />
         <Route exact path="/login" component={Login} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
-        <PrivateRoute exaptch path="/project/:id" component={Project} />
+        <PrivateRoute exact path="/project/:id" component={Project} />
+        <PrivateRoute exact path="/new-project" component={NewProject} />
       </Switch>
     </div>
   );

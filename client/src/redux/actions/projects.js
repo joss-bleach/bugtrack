@@ -63,3 +63,47 @@ export const getProjectById = (id) => async (dispatch) => {
     });
   }
 };
+
+// Create Project
+
+export const createProject = (formData, history, edit = false) => async (
+  dispatch
+) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const res = await axios.post("/api/projects", formData, config);
+    if (!edit) {
+      dispatch({
+        type: GET_PROJECTS,
+        payload: res.data,
+      });
+    } else {
+      dispatch({
+        type: GET_PROJECT,
+        payload: res.data,
+      });
+    }
+
+    dispatch(
+      setAlert(edit ? "Project Updated" : "Project Created", "alert-success")
+    );
+
+    if (!edit) {
+      history.push("/dashboard");
+    }
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "alert-danger")));
+    }
+    dispatch({
+      type: PROJECT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};

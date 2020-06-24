@@ -27,9 +27,6 @@ const ProjectItem = ({
         <Link to={`/project/${_id}`} className="card-link">
           View Project
         </Link>
-        <a onClick={(e) => deleteProject(_id)} href="#!" className="card-link">
-          Delete Project
-        </a>
       </div>
     </div>
   );

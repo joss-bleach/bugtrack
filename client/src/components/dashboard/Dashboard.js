@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import NoProjects from "./projects/NoProjects";
 import ProjectItem from "./projects/ProjectItem";
@@ -20,6 +21,11 @@ const Dashboard = ({ getProjects, projects: { projectlist, loading } }) => {
   ) : (
     <Fragment>
       <h1 className="m2">My Projects</h1>
+      {projectlist.length > 0 && (
+        <Link to="/new-project" type="button" className="btn btn-success">
+          <span className="mdi mdi-plus-circle-outline"></span> New Project
+        </Link>
+      )}
       <hr />
       {projectlist.length > 0 ? (
         projectlist.map((project) => (

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const NoProjects = () => {
   return (
@@ -8,9 +9,9 @@ export const NoProjects = () => {
         <p className="m2">
           You don't have any projects yet - create your first one.
         </p>
-        <button type="button" className="btn btn-success">
+        <Link to="/new-project" type="button" className="btn btn-success">
           <span className="mdi mdi-plus-circle-outline"></span> Create Project
-        </button>
+        </Link>
       </div>
     </div>
   );
