@@ -7,28 +7,28 @@ import ProjectItem from "./projects/ProjectItem";
 // Redux
 import { connect } from "react-redux";
 import Loading from "../layout/Loading";
-import { getProjects } from "../../redux/actions/projects";
+import { getProjects } from "../../redux/actions/project";
 
-const Dashboard = ({ getProjects, projects: { projectlist, loading } }) => {
+const Dashboard = ({ getProjects, project: { projects, loading } }) => {
   useEffect(() => {
     getProjects();
   }, [getProjects]);
 
-  return loading && projectlist === null ? (
+  return loading && projects === null ? (
     <div className="m2">
       <Loading />
     </div>
   ) : (
     <Fragment>
       <h1 className="m2">My Projects</h1>
-      {projectlist.length > 0 && (
+      {projects.length > 0 && (
         <Link to="/new-project" type="button" className="btn btn-success">
           <span className="mdi mdi-plus-circle-outline"></span> New Project
         </Link>
       )}
       <hr />
-      {projectlist.length > 0 ? (
-        projectlist.map((project) => (
+      {projects.length > 0 ? (
+        projects.map((project) => (
           <ProjectItem key={project._id} project={project}></ProjectItem>
         ))
       ) : (
@@ -43,7 +43,7 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  projects: state.projects,
+  project: state.project,
 });
 
 export default connect(mapStateToProps, { getProjects })(Dashboard);

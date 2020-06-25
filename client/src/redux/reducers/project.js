@@ -7,7 +7,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  projectlist: [],
+  projects: [],
   project: null,
   loading: true,
   errors: {},
@@ -20,7 +20,7 @@ export default function (state = initialState, action) {
     case GET_PROJECTS:
       return {
         ...state,
-        projectlist: payload,
+        projects: payload,
         loading: false,
       };
     case GET_PROJECT:
@@ -38,15 +38,14 @@ export default function (state = initialState, action) {
     case DELETE_PROJECT:
       return {
         ...state,
-        projectlist: state.projectlist.filter(
-          (project) => project._id !== payload
-        ),
+        projects: state.projects.filter((project) => project._id !== payload),
         loading: false,
       };
     case CLEAR_PROJECT:
       return {
         ...state,
-        projectlist: [],
+        projects: [],
+        project: null,
         loading: false,
       };
     default:

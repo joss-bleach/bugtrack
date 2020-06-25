@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 // Redux
 import { connect } from "react-redux";
-import { createProject } from "../../redux/actions/projects";
+import { createProject } from "../../redux/actions/project";
 
 const ProjectForm = ({ createProject, history }) => {
   const [formData, setFormData] = useState({

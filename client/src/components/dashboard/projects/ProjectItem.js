@@ -5,7 +5,7 @@ import Moment from "react-moment";
 
 // Redux
 import { connect } from "react-redux";
-import { deleteProject } from "../../../redux/actions/projects";
+import { deleteProject } from "../../../redux/actions/project";
 
 const ProjectItem = ({
   deleteProject,
@@ -33,7 +33,7 @@ const ProjectItem = ({
 };
 
 ProjectItem.propTypes = {
-  projects: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
   deleteProject: PropTypes.func.isRequired,
 };
 
