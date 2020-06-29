@@ -10,15 +10,22 @@ import Routes from "./components/Routing/Routes";
 import Navigation from "./views/navigation/Navigation";
 import PageFooter from "./views/layout/PageFooter";
 
+// Redux
+
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
 var hist = createBrowserHistory();
 
 ReactDOM.render(
-  <Router history={hist}>
-    <Navigation />
-    <Switch>
-      <Route component={Routes} />
-    </Switch>
-    <PageFooter />
-  </Router>,
+  <Provider store={store}>
+    <Router history={hist}>
+      <Navigation />
+      <Switch>
+        <Route component={Routes} />
+      </Switch>
+      <PageFooter />
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
