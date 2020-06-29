@@ -1,27 +1,20 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
+import React, { Fragment } from "react";
+import { Route, Switch } from "react-router";
 
-// Routes
-import Landing from "../layout/Landing";
-import Alert from "../layout/Alert";
-import Login from "../layout/Login";
-import Dashboard from "../dashboard/Dashboard";
-import Project from "../project/Project";
-import NewProject from "../project/NewProject";
+// Views
+import Landing from "../../views/layout/Landing/Landing";
+import Register from "../../views/auth/Register";
+import Login from "../../views/auth/Login";
 
 export const Routes = () => {
   return (
-    <div className="container">
-      <Alert />
+    <Fragment>
       <Switch>
         <Route exact path="/" component={Landing} />
+        <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <PrivateRoute exact path="/dashboard" component={Dashboard} />
-        <PrivateRoute exact path="/project/:id" component={Project} />
-        <PrivateRoute exact path="/new-project" component={NewProject} />
       </Switch>
-    </div>
+    </Fragment>
   );
 };
 
